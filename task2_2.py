@@ -16,7 +16,14 @@ database = mysql.connector.connect(host='localhost',
 #connect to cursor                       
 cursor = database.cursor()
 
-cursor.execute("select name,COUNT(*) from pre_vio GROUP BY name")
-
+cursor.execute( """SELECT \
+    DISTINCT \
+    INSPECTIONS.facility_name as name \
+    FROM VIOLATIONS\
+    INNER JOIN INSPECTIONS ON INSPECTIONS.serial_number=VIOLATIONS.serial_number""")
 myresult = cursor.fetchall()
-print (myresult)
+lst=[]
+for i in myresult:
+    lst.append(i)
+lst.sort()    
+print (lst)
